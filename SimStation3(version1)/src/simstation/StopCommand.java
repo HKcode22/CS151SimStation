@@ -1,0 +1,14 @@
+package simstation;
+import mvc.Model;
+import mvc.Command;
+
+public class StopCommand extends Command {
+    public StopCommand(Model model) {
+        super(model);
+    }
+
+    public void execute() {
+        Simulation sim = (Simulation)model;
+        sim.stop();
+    }
+}
