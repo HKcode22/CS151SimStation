@@ -95,6 +95,18 @@ public class Simulation extends Model {
         }
         agents.clear(); // Clear the list of agents
     }
+
+    public void suspend() {
+        for (Agent agent : agents) {
+            agent.suspend();
+        }
+    }
+
+   public void stats() {
+        for (Agent agent : agents) {
+            agent.stats();
+        }
+    }
       
 
 }
