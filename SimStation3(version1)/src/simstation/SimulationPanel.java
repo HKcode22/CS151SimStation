@@ -37,3 +37,38 @@ public class SimulationPanel extends AppPanel {
     }
 }
 
+//package simstation;
+//import mvc.*;
+//import randomWalks.*;
+//
+//import javax.swing.*;
+//
+//public class SimulationPanel extends AppPanel {
+//
+//    public SimulationPanel(AppFactory factory) {
+//        super(factory);
+//        SimulationView simulationView; 
+//
+//        JButton startButton = new JButton("Start");
+//        JButton suspendButton = new JButton("Suspend");
+//        JButton resumeButton = new JButton("Resume");
+//        JButton stopButton = new JButton("Stop");
+//
+//        startButton.addActionListener(e -> ((StartCommand) factory.makeEditCommand(getModel(), "Start", this)).execute());
+////        suspendButton.addActionListener(e -> ((SuspendCommand) factory.makeEditCommand(getModel(), "Suspend", this)).execute());
+////        resumeButton.addActionListener(e -> ((ResumeCommand) factory.makeEditCommand(getModel(), "Resume", this)).execute());
+////        stopButton.addActionListener(e -> ((StopCommand) factory.makeEditCommand(getModel(), "Stop", this)).execute());
+//
+//        controlPanel.add(startButton);
+//        controlPanel.add(suspendButton);
+//        controlPanel.add(resumeButton);
+//        controlPanel.add(stopButton);
+//
+//
+//
+//        simulationView = new SimulationView((Simulation) getModel());
+//        add(simulationView);
+//    }
+//
+//}
+
