@@ -35,7 +35,7 @@ public class StatsCommand extends Command {
 //
 //    @Override
 //    public void execute() {
-//        System.out.println("Start button clicked!"); // Debugging print statement
+//        System.out.println("Start button clicked!"); 
 //        ((Simulation) model).start();
 //    }
 //
