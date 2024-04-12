@@ -11,7 +11,7 @@ public class PlagueSimulation extends Simulation {
         for(int i = 0; i < 2; i++) // add the infected
             addAgent(new Host());
         for(int i = 0; i < 28; i++) // add the healthy
-            addAgent(new Host());
+            addAgent(new Healthy());
     }
 
     public static void main(String[] args) {
