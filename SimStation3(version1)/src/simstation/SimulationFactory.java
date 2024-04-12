@@ -1,5 +1,4 @@
 package simstation;
-
 import mvc.*;
 
 public abstract class SimulationFactory implements AppFactory {
