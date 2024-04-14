@@ -8,7 +8,7 @@ public abstract class SimulationFactory implements AppFactory {
     }
 
     @Override
-    public String getAbout() {
+    public String about() {
         return "SimStation v.1.0. Copyright 2024 by simstation group 10 (Hamza, Nicole, Sandy)";
     }
 

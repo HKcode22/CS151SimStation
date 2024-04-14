@@ -21,24 +21,3 @@ public class StatsCommand extends Command {
     }
 }
 
-
-//package simstation;
-//
-//import mvc.Command;
-//import mvc.Model;
-//
-//public class StartCommand extends Command {
-//
-//    public StartCommand(Model model) {
-//        super(model);
-//    }
-//
-//    @Override
-//    public void execute() {
-//        System.out.println("Start button clicked!"); 
-//        ((Simulation) model).start();
-//    }
-//
-//
-//}
-
