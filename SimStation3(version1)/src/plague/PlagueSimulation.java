@@ -7,9 +7,8 @@ public class PlagueSimulation extends Simulation {
     public static int RESISTANCE = 2; // % chance of resisting infection
 
     public void populate() {
-        for (int i = 0; i < 100; i++) {
-            boolean initialInfect = Math.random() < 0.5; // 50% chance of initial infection
-            this.addAgent(new Organism(initialInfect));
+        for (int i = 0; i < 25; i++) {
+            this.addAgent(new Organism());
         }
     }
 
