@@ -1,32 +1,40 @@
 package plague;
+import mvc.*;
 import simstation.*;
 
 public class Organism extends Agent {
-    private boolean infected;
+    private boolean infected, resistant;
 
-    public Organism(boolean initialInfect) {
-        this.infected = initialInfect;
+    public Organism(){
+        resistant = Utilities.rng.nextInt(100) < PlagueSimulation.RESISTANCE;
+        infected = !resistant && Utilities.rng.nextInt(100) < PlagueSimulation.VIRULENCE;
     }
 
     public boolean isInfected() {
         return infected;
     }
 
-    @Override
-    public void update() {
-        if (!infected) {
-            Agent neighbor = this.world.getNeighbor(this, 10);
-            if (neighbor instanceof Organism && ((Organism) neighbor).isInfected()) {
-                attemptInfection();
-            }
-        }
+    public boolean isResistant(){
+        return resistant;
     }
 
-    private void attemptInfection() {
-        if (Math.random() * 100 < PlagueSimulation.VIRULENCE) {
-            if (Math.random() * 100 >= PlagueSimulation.RESISTANCE) {
-                infected = true; // organism fails to resist
+    public void setInfected(boolean b){
+        infected = b;
+    }
+
+    @Override
+    public void update() {
+        if (infected) {
+            // try to infect a neighbor
+            Agent neighbor = world.getNeighbor(this, 10);
+            if (neighbor != null && neighbor instanceof Organism) {
+                Organism orgNeighbor = (Organism) neighbor;
+                if (Utilities.rng.nextInt(100) < PlagueSimulation.VIRULENCE && !orgNeighbor.isResistant()) {
+                    orgNeighbor.setInfected(true); // organism fails to resist
+                }
             }
         }
     }
+}
+
 }
