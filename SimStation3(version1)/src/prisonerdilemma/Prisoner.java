@@ -1,26 +1,25 @@
 package prisonerdilemma;
 
-import simstation.Agent;
-
 import java.util.Random;
 
-public class Prisoner extends Agent {
-
+public class Prisoner extends simstation.Agent {
     private int fitness = 0;
-    private boolean cheated = false;
+    private boolean partnerCheated = false;
     private Strategy strategy;
 
     public Prisoner(Strategy strategy) {
         this.strategy = strategy;
     }
 
-    public boolean cooperate(){
-        return new Random().nextBoolean();
+    public boolean cooperate() {
+        return strategy.decide();
     }
 
     @Override
-    public void update() { }
+    public void update() {
+    }
 
-    public void updateFitness(int amt) { }
-
+    public void updateFitness(int amt) {
+        fitness += amt;
+    }
 }
