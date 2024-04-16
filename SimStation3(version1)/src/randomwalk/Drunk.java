@@ -1,9 +1,7 @@
 package randomwalk;
 
 import mvc.Utilities;
-import simstation.Agent;
-import simstation.Heading;
-import simstation.Simulation;
+import simstation.*
 
 class Drunk extends Agent {
 
