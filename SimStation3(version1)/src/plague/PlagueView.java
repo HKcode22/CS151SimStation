@@ -18,7 +18,7 @@ public class PlagueView extends SimulationView {
     }
 
     @Override
-    protected void paintComponent(Graphics g) {
+    public void paintComponent(Graphics g) {
         super.paintComponent(g);
         List<Agent> agents = simulation.getAgents();
         for (Agent agent : agents) {
