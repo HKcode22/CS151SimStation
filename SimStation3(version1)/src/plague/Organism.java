@@ -15,6 +15,10 @@ public class Organism extends Agent {
         return infected;
     }
 
+    public boolean isResistant(){
+        return resistant;
+    }
+
     public void setInfected(){
         if (!resistant)
             infected = true;
