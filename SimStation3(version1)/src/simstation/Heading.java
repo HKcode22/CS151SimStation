@@ -26,7 +26,10 @@ public class Heading {
         return direction;
     }
 
-    // Method to get heading as text
+    public void setDirection(int direction) {
+        this.direction = direction;
+    }
+
     public String getHeading() {
         switch (direction) {
             case NORTH:
