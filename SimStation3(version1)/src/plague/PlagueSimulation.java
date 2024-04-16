@@ -8,7 +8,7 @@ public class PlagueSimulation extends Simulation {
     public static int RESISTANCE = 5; // % chance of being resistant
 
     public void populate() {
-        for (int i = 0; i < 30; i++) {
+        for (int i = 0; i < 50; i++) {
             addAgent(new Organism(this));
         }
     }
