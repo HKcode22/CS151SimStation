@@ -5,10 +5,9 @@ import java.util.List;
 
 public class Organism extends Agent {
     private boolean infected, resistant;
-    public Simulation world;
 
     public Organism(Simulation world){
-        this.world = world;
+        super(world);
         resistant = Utilities.rng.nextInt(100) < PlagueSimulation.RESISTANCE;
         infected = !resistant && Utilities.rng.nextInt(100) < PlagueSimulation.VIRULENCE;
     }
@@ -25,15 +24,13 @@ public class Organism extends Agent {
         infected = b;
     }
 
+    @Override
     public void update() {
         if (infected) {
-            List<Agent> neighbors = world.getNeighbor(this, 2000);
-            for (Agent neighbor : neighbors) {
-                if (neighbor instanceof Organism orgNeighbor) {
-                    if (Utilities.rng.nextInt(100) < PlagueSimulation.VIRULENCE && !orgNeighbor.isResistant()) {
-                        orgNeighbor.setInfected(true); // organism fails to resist
-                    }
-                }
+            // Check nearby agents and try to infect them
+            Organism neighbor = (Organism)world.getNeighbor(this,20);
+            if (!neighbor.isResistant() && !neighbor.isInfected()) {
+                neighbor.setInfected(true);
             }
         }
     }
