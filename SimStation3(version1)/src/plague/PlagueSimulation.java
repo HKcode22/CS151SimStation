@@ -4,8 +4,8 @@ import simstation.*;
 import javax.swing.*;
 
 public class PlagueSimulation extends Simulation {
-    public static int VIRULENCE = 25; // % chance of infection
-    public static int RESISTANCE = 25; // % chance of being resistant
+    public static int VIRULENCE = 50; // % chance of infection
+    public static int RESISTANCE = 2; // % chance of being resistant
 
     public void populate() {
         for (int i = 0; i < 30; i++) {
@@ -17,9 +17,12 @@ public class PlagueSimulation extends Simulation {
     public void stats() {
         int totalAgents = getAgents().size();
         int count = 0;
+        int resAgents = 0;
 
         for (Agent agent : getAgents()) {
             Organism organism = (Organism) agent;
+            if(organism.isResistant())
+                resAgents++;
             if (organism.isInfected()) {
                 count++;
             }
@@ -33,7 +36,8 @@ public class PlagueSimulation extends Simulation {
         StringBuilder statsBuilder = new StringBuilder();
         statsBuilder.append("# agents = ").append(totalAgents).append("\n");
         statsBuilder.append("clock = ").append(this.clock).append("\n");
-        statsBuilder.append("% infected = ").append(String.format("%.2f%%", percent));
+        statsBuilder.append("# agents immune = ").append(resAgents).append("\n");
+        statsBuilder.append("% infected = ").append(String.format("%.2f%%", percent)).append("\n");
 
         JOptionPane.showMessageDialog(null, statsBuilder.toString(), "Infection Stats", JOptionPane.INFORMATION_MESSAGE);
     }
