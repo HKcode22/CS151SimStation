@@ -1,3 +1,4 @@
+/*
 package plague;
 import mvc.*;
 import randomWalks.*;
@@ -49,3 +50,4 @@ public class PlagueSimulation extends Simulation {
 //         panel.display();
 //     }
 // }
+*/
