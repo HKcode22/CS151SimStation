@@ -18,17 +18,19 @@ public class PlagueView extends SimulationView {
     }
 
     @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
+    public void paintComponent(Graphics gc) {
+        super.paintComponent(gc);
         List<Agent> agents = simulation.getAgents();
-        for (Agent agent : agents) {
-            if(agent instanceof Organism) {
-                Organism org = (Organism) agent;
-                if (org.isInfected())
-                    g.setColor(Color.RED);
-                else
-                    g.setColor(Color.GREEN);
-                g.fillOval(org.getXc(), org.getYc(), 10, 10); // Draw a small oval as a dot
+        if(!agents.isEmpty()&&agents!=null) {
+            for (Agent agent : agents) {
+                if (agent instanceof Organism) {
+                    Organism org = (Organism) agent;
+                    if (org.isInfected())
+                        gc.setColor(Color.RED);
+                    else
+                        gc.setColor(Color.GREEN);
+                    gc.fillOval(org.getXc(), org.getYc(), 10, 10); // Draw a small oval as a dot
+                }
             }
         }
     }
