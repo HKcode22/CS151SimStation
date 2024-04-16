@@ -1,4 +1,3 @@
-/*
 package plague;
 import mvc.*;
 import simstation.*;
@@ -18,4 +17,3 @@ public class PlagueFactory extends SimulationFactory {
         return "Plague";
     }
 }
-*/

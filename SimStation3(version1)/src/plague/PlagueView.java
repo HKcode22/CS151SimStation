@@ -1,4 +1,3 @@
-/*
 package plague;
 
 import mvc.*;
@@ -38,4 +37,3 @@ public class PlagueView extends SimulationView {
 
 
 
-*/
