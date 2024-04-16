@@ -30,6 +30,7 @@ public class PlagueView extends SimulationView {
                     else
                         gc.setColor(Color.GREEN);
                     gc.fillOval(org.getXc(), org.getYc(), 10, 10); // Draw a small oval as a dot
+                    gc.drawOval(org.getXc(), org.getYc(), 10, 10); // make oval look cleaner
                 }
             }
         }
