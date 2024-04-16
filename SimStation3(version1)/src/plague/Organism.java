@@ -32,7 +32,7 @@ public class Organism extends Agent {
 
         if (infected) {
             // Check nearby agents and try to infect them
-            Agent neighbor = world.getNeighbor(this,20);
+            Agent neighbor = world.getNeighbor(this,25);
             if (neighbor != this && neighbor != null) {
                 Organism orgNeighbor = (Organism)neighbor;
                 if(!orgNeighbor.isInfected())
