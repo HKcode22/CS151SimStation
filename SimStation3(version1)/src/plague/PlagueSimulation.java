@@ -5,7 +5,7 @@ import javax.swing.*;
 
 public class PlagueSimulation extends Simulation {
     public static int VIRULENCE = 50; // % chance of infection
-    public static int RESISTANCE = 2; // % chance of being resistant
+    public static int RESISTANCE = 5; // % chance of being resistant
 
     public void populate() {
         for (int i = 0; i < 30; i++) {
