@@ -1,7 +1,6 @@
 package plague;
 import mvc.*;
 import simstation.*;
-import java.util.List;
 
 public class Organism extends Agent {
     private boolean infected, resistant;
@@ -16,21 +15,21 @@ public class Organism extends Agent {
         return infected;
     }
 
-    public boolean isResistant(){
-        return resistant;
-    }
-
-    public void setInfected(boolean b){
-        infected = b;
+    public void setInfected(){
+        if (!resistant)
+            infected = true;
     }
 
     @Override
     public void update() {
         if (infected) {
             // Check nearby agents and try to infect them
-            Organism neighbor = (Organism)world.getNeighbor(this,20);
-            if (!neighbor.isResistant() && !neighbor.isInfected()) {
-                neighbor.setInfected(true);
+            Agent neighbor = world.getNeighbor(this,20);
+            if (neighbor != this && neighbor != null) {
+                Organism orgNeighbor = (Organism)neighbor;
+                if(!orgNeighbor.isInfected())
+                    if(Utilities.rng.nextInt(100)< PlagueSimulation.VIRULENCE)
+                        orgNeighbor.setInfected();
             }
         }
     }
