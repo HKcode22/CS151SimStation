@@ -1,8 +1,7 @@
 package randomwalk;
 
 import mvc.AppPanel;
-import simstation.Simulation;
-import simstation.SimulationPanel;
+import simstation.*
 
 public class RandomWalkSimulation extends Simulation {
     public void populate() {
