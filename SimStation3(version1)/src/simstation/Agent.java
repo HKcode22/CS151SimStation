@@ -13,7 +13,7 @@ public abstract class Agent implements Serializable, Runnable {
     private int radius = DEFAULT_RADIUS;
     private boolean suspended, stopped;
     transient protected Thread myThread;
-    private Simulation world;
+    public Simulation world;
 
     public Agent(Simulation world) {
         this.world = world;
