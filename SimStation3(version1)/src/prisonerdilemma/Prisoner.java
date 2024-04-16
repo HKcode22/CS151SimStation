@@ -1,4 +1,3 @@
-/*
 package prisonerdilemma;
 
 import simstation.Agent;
@@ -25,4 +24,3 @@ public class Prisoner extends Agent {
     public void updateFitness(int amt) { }
 
 }
-*/
