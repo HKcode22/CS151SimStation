@@ -1,3 +1,4 @@
+/*
 package plague;
 
 import mvc.*;
@@ -28,7 +29,7 @@ public class PlagueView extends SimulationView {
                     g.setColor(Color.RED);
                 else
                     g.setColor(Color.GREEN);
-                g.fillOval(org.getX(), org.getY(), 10, 10); // Draw a small oval as a dot
+                g.fillOval(org.getXc(), org.getYc(), 10, 10); // Draw a small oval as a dot
             }
         }
     }
@@ -37,3 +38,4 @@ public class PlagueView extends SimulationView {
 
 
 
+*/

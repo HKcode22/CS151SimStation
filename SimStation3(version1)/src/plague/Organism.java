@@ -1,3 +1,4 @@
+/*
 
 package plague;
 import mvc.*;
@@ -102,3 +103,4 @@ public class Organism extends Agent {
 // }
 
 // }
+*/

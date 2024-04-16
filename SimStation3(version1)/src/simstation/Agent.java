@@ -1,34 +1,52 @@
 package simstation;
 
-import mvc.*;
+import mvc.Utilities;
 
-public abstract class Agent implements Runnable {
-    protected int x, y;
-    protected Heading heading;
-    protected Simulation world;
-    protected boolean suspended;
+import java.awt.*;
+import java.io.Serializable;
+
+public abstract class Agent implements Serializable, Runnable {
+    private static final int DEFAULT_RADIUS = 10;
+    private String name;
+    public Heading heading;
+    private Point coord;
+    private int radius = DEFAULT_RADIUS;
+    private boolean suspended, stopped;
     transient protected Thread myThread;
+    private Simulation world;
 
-    protected boolean isRunning;
-
-
-    public Agent() {
+    public Agent(Simulation world) {
         this.world = world;
-        x = Utilities.rng.nextInt(Params.WORLD_WIDTH);
-        y = Utilities.rng.nextInt(Params.WORLD_HEIGHT);
+        heading = new Heading();
         suspended = false;
-        myThread = new Thread(this);
+        stopped = false;
+        myThread = null;
+        coord = new Point(Utilities.rng.nextInt(world.getWidth()), Utilities.rng.nextInt(world.getHeight()));
     }
 
+    public int getRadius() {
+        return radius;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Point getCoord() {
+        return coord;
+    }
+
+    @Override
     public void run() {
+        myThread = Thread.currentThread();
         onStart();
-        while (!suspended) {
-//            update();
-//            change();
+        while (!stopped) {
             try {
-                Thread.sleep(Params.DELAY);
+                this.update();
+                Thread.sleep(20);
+                checkSuspended();
             } catch (InterruptedException e) {
-                onInterrupted();
+                Utilities.error(e);
             }
         }
         onExit();
@@ -36,170 +54,81 @@ public abstract class Agent implements Runnable {
 
     public abstract void update();
 
-    public void start() {
-        if (!isRunning) {
-            myThread.start();
-            isRunning = true;
+    public void start() {}
+
+    private synchronized void checkSuspended() {
+        try {
+            while (!stopped && suspended) {
+                wait();
+                suspended = false;
+            }
+        } catch (InterruptedException e) {
+            Utilities.error(e);
         }
     }
 
-    public double distancetonextagent(Agent otheragent){
-        int dx = this.x - otheragent.getX();
-        int dy = this.y - otheragent.getY();
-        return Math.sqrt(dx*dx+dy*dx);
-    }
-
-    public void suspend() {
+    public synchronized void suspend() {
         suspended = true;
+        onInterrupted();
     }
 
-    public void resume() {
-        suspended = false;
+    public synchronized boolean isSuspended() {
+        return suspended;
+    }
+
+    public synchronized void resume() {
+        notify();
     }
 
     public void stop() {
-        myThread.interrupt();
-        onExit();
+        stopped = true;
     }
 
-    protected void move(int steps) {
-        switch (heading) {
-            case NORTH:
-                y = Math.max(0, y - steps);
+    public synchronized boolean isStopped() {
+        return stopped;
+    }
+
+    public void onStart() {}
+
+    public void onInterrupted() {}
+
+    public void onExit() {}
+
+    public void setSimulation(Simulation world) {
+        this.world = world;
+    }
+
+    public void move(int steps) {
+        Point oldPoint = new Point(coord); // Create a copy of the current point
+        int x = coord.x;
+        int y = coord.y;
+        switch (heading.getDirection()) {
+            case Heading.NORTH:
+                y -= steps;
                 break;
-            case SOUTH:
-                y = Math.min(Params.WORLD_HEIGHT, y + steps);
+            case Heading.SOUTH:
+                y += steps;
                 break;
-            case EAST:
-                x = Math.min(Params.WORLD_WIDTH, x + steps);
+            case Heading.EAST:
+                x += steps;
                 break;
-            case WEST:
-                x = Math.max(0, x - steps);
+            case Heading.WEST:
+                x -= steps;
                 break;
         }
-        world.changed();
+        // Wrap around logic
+        x = (x + world.getWidth()) % world.getWidth();
+        y = (y + world.getHeight()) % world.getHeight();
+        coord.setLocation(x, y);
+
+        world.changed(oldPoint, coord); // Notify world of the change
     }
 
-    protected void onStart(){
+    public int getXc() {
+        return coord.x;
     }
 
-    protected void onInterrupted() {
-    }
-
-    protected void onExit() {
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void changeHeading(Heading newHeading) {
-        heading = newHeading;
+    public int getYc() {
+        return coord.y;
     }
 }
-
-
-
-
-
-// package simstation;
-
-// import mvc.*;
-
-// public abstract class Agent implements Runnable {
-//     protected int x, y;
-//     protected Heading heading;
-//     protected Simulation world;
-//     protected boolean suspended;
-//     transient protected Thread myThread;
-
-//     protected boolean isRunning;
-
-
-//     public Agent() {
-//         this.world = world;
-//         x = Utilities.rng.nextInt(Params.WORLD_WIDTH);
-//         y = Utilities.rng.nextInt(Params.WORLD_HEIGHT);
-//         suspended = false;
-//         myThread = new Thread(this);
-//     }
-
-//     public void run() {
-//         onStart();
-//         while (!suspended) {
-//             update();
-//             try {
-//                 Thread.sleep(Params.DELAY);
-//             } catch (InterruptedException e) {
-//                 onInterrupted();
-//             }
-//         }
-//         onExit();
-//     }
-
-//     public abstract void update();
-
-//     public void start() {
-//         if (!isRunning) {
-//             myThread.start();
-//             isRunning = true;
-//         }
-//     }
-
-//     public void suspend() {
-//         suspended = true;
-//     }
-
-//     public void resume() {
-//         suspended = false;
-//     }
-
-//     public void stop() {
-//         myThread.interrupt();
-//         onExit();
-//     }
-
-//     protected void move(int steps) {
-//         switch (heading) {
-//             case NORTH:
-//                 y = Math.max(0, y - steps);
-//                 break;
-//             case SOUTH:
-//                 y = Math.min(Params.WORLD_HEIGHT, y + steps);
-//                 break;
-//             case EAST:
-//                 x = Math.min(Params.WORLD_WIDTH, x + steps);
-//                 break;
-//             case WEST:
-//                 x = Math.max(0, x - steps);
-//                 break;
-//         }
-//         world.changed();
-//     }
-
-//     protected void onStart(){
-//     }
-
-//     protected void onInterrupted() {
-//     }
-
-//     protected void onExit() {
-//     }
-
-//     public int getX() {
-//         return x;
-//     }
-
-//     public int getY() {
-//         return y;
-//     }
-
-//     public void changeHeading(Heading newHeading) {
-//         heading = newHeading;
-//     }
-// }
-

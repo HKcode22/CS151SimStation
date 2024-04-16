@@ -3,69 +3,31 @@ package simstation;
 import mvc.Model;
 import mvc.View;
 
-import javax.swing.*;
 import java.awt.*;
-import java.util.List;
+import java.awt.geom.Ellipse2D;
+import java.util.ArrayList;
 
 public class SimulationView extends View {
-    private Simulation simulation;
-
     public SimulationView(Model model) {
         super(model);
-        if (model instanceof Simulation) {
-            this.simulation = (Simulation) model;
-        } else {
-            throw new IllegalArgumentException("Model must be an instance of Simulation");
+        setBackground(Color.gray);
+    }
+
+    public void paintComponent(Graphics gc) {
+        super.paintComponent(gc);
+        Simulation simulation = (Simulation)model;
+        simulation.setWidth(getWidth());
+        simulation.setHeight(getHeight());
+        ArrayList<Agent> agentList = simulation.getAgents();
+
+        Graphics2D g2 = (Graphics2D) gc;
+        for(Agent a : agentList)
+        {
+            Ellipse2D oval = new Ellipse2D.Double(a.getCoord().x, a.getCoord().y, a.getRadius(), a.getRadius());
+            g2.draw(oval);
+            g2.setColor(Color.WHITE);
+            g2.fill(oval);
         }
     }
 
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        List<Agent> agents = simulation.getAgents();
-        for (Agent agent : agents) {
-            g.setColor(Color.WHITE);
-            g.fillOval(agent.getX(), agent.getY(), 10, 10); // Draw a small oval as a dot
-        }
-    }
-
-    @Override
-    public void update() {
-        repaint();
-    }
 }
-
-
-
-
-
-
-// package simstation;
-
-// import mvc.View;
-
-// import javax.swing.*;
-// import java.awt.*;
-// import java.util.List;
-
-// public class SimulationView extends View {
-//     public Simulation simulation;
-
-//     public SimulationView(Simulation model) {
-//         super(model);
-//         this.simulation = model;
-//     }
-
-//     @Override
-//     protected void paintComponent(Graphics gc) {
-//         super.paintComponent(gc);
-
-//         List<Agent> agents = simulation.getAgents();
-
-//         // Draw each agent as a dot on the screen
-//         for (Agent agent : agents) {
-//             gc.setColor(Color.WHITE); // Set dot color
-//             gc.fillRect(agent.getX(), agent.getY(), 5, 5); // Draw a small rectangle as a dot
-//         }
-//     }
-// }

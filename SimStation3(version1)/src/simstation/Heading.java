@@ -1,32 +1,44 @@
 package simstation;
-import mvc.*;
 
-public enum Heading {
-    NORTH, SOUTH, EAST, WEST;
+import mvc.Utilities;
+
+public class Heading {
+    public static final int NORTH = 0;
+    public static final int SOUTH = 1;
+    public static final int EAST = 2;
+    public static final int WEST = 3;
+
+    private int direction;
 
     public static Heading random() {
-        Heading[] headings = Heading.values();
-        int randomIndex = Utilities.rng.nextInt(headings.length);
-        return headings[randomIndex];
+        return new Heading();
     }
 
-    public Heading turnLeft() {
-        switch (this) {
-            case NORTH: return WEST;
-            case SOUTH: return EAST;
-            case EAST: return NORTH;
-            case WEST: return SOUTH;
-            default: throw new IllegalStateException("Unknown heading: " + this);
-        }
+    public static int randomDirection() {
+        return Utilities.rng.nextInt(4); // Generate a random number between 0 and 3
     }
 
-    public Heading turnRight() {
-        switch (this) {
-            case NORTH: return EAST;
-            case SOUTH: return WEST;
-            case EAST: return SOUTH;
-            case WEST: return NORTH;
-            default: throw new IllegalStateException("Unknown heading: " + this);
+    public Heading() {
+        direction = randomDirection();
+    }
+
+    public int getDirection() {
+        return direction;
+    }
+
+    // Method to get heading as text
+    public String getHeading() {
+        switch (direction) {
+            case NORTH:
+                return "NORTH";
+            case SOUTH:
+                return "SOUTH";
+            case EAST:
+                return "EAST";
+            case WEST:
+                return "WEST";
+            default:
+                return "UNKNOWN";
         }
     }
 }
