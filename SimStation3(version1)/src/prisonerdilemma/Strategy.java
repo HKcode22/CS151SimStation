@@ -1,3 +1,4 @@
+/*
 package prisonerdilemma;
 
 public interface Strategy {
@@ -36,4 +37,4 @@ class TitForTatStrategy implements Strategy {
     public boolean decide() {
         return lastOpponentCooperated;
     }
-}
+}*/

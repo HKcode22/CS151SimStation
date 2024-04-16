@@ -2,7 +2,7 @@ package prisonerdilemma;
 import mvc.*;
 import simstation.*;
 
-public class PrisonerFactory extends SimulationFactory {
+public class /**/PrisonerFactory extends SimulationFactory {
     @Override
     public Model makeModel() {
         return new PrisonerSimulation();

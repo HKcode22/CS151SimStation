@@ -1,3 +1,4 @@
+/*
 package plague;
 import mvc.*;
 import simstation.*;
@@ -39,3 +40,4 @@ public class Organism extends Agent {
     }
 
 }
+*/

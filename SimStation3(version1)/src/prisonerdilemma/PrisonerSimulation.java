@@ -1,5 +1,5 @@
 package prisonerdilemma;
 import simstation.*;
 
-public class PrisonerSimulation extends Simulation {
+public class /**/PrisonerSimulation extends Simulation {
 }
