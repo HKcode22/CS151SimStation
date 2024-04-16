@@ -22,6 +22,10 @@ public class Organism extends Agent {
 
     @Override
     public void update() {
+        heading = Heading.random();
+        int steps = Utilities.rng.nextInt(10) + 1;
+        move(steps);
+
         if (infected) {
             // Check nearby agents and try to infect them
             Agent neighbor = world.getNeighbor(this,20);
