@@ -6,59 +6,6 @@ import mvc.AppPanel;
 import javax.swing.*;
 
 public class SimulationPanel extends AppPanel {
-    /*@Override
-    public void actionPerformed(ActionEvent e) {
-        try {
-            String cmmd = e.getActionCommand();
-            Simulation sim = (Simulation)model;
-            switch (cmmd) {
-                case "Save":
-                    if(sim.getState() != Simulation.READY_STATE && sim.getState() != Simulation.SUSPENDED_STATE)
-                    {
-                        Utilities.error("Can't Save When its Running or Suspended");
-                    }
-                    else {
-                        Utilities.save(model, false);
-                    }
-                    break;
-                case "SaveAs":
-                    if(sim.getState() != Simulation.READY_STATE && sim.getState() != Simulation.SUSPENDED_STATE)
-                    {
-                        Utilities.error("Can't Save When its Running or Suspended");
-                    }
-                    else {
-                        Utilities.save(model, true);
-                    }
-                    break;
-                case "Open":
-                    Model newModel = Utilities.open(model);
-                    if (newModel != null) {
-                        setModel(newModel);
-                    }
-                    break;
-                case "About":
-                    Utilities.inform(this.factory.about());
-                    break;
-                case "Help":
-                    Utilities.inform(this.factory.getHelp());
-                    break;
-                case "New":
-                    Utilities.saveChanges(model);
-                    setModel(factory.makeModel());
-                    model.setUnsavedChanges(false);
-                    break;
-                case "Quit":
-                    Utilities.saveChanges(model);
-                    System.exit(0);
-                    break;
-                default:
-                    Command c = factory.makeEditCommand(this.model, cmmd, this);
-                    c.execute();
-            }
-        } catch (Exception error) {
-            Utilities.error(error);
-        }
-    }*/
     public SimulationPanel(AppFactory factory) {
         super(factory);
         JButton start = new JButton("Start");
