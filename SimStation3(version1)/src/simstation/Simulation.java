@@ -15,7 +15,7 @@ public class Simulation extends Model {
 
     transient private Timer timer;
     private ArrayList<Agent> agents;
-    private int clock;
+    public int clock;
     private int state;
     private int width;
     private int height;
