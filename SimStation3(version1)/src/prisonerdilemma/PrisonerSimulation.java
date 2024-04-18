@@ -1,101 +1,83 @@
 package prisonerdilemma;
 
-import mvc.AppPanel;
-import randomwalk.*;
+import mvc.*;
 import simstation.*;
-
-import java.util.ArrayList;
-import java.util.List;
+import javax.swing.*;
 
 public class PrisonerSimulation extends Simulation {
+    @Override
+    public void populate() {
+        int numPrisoners = 40; // Total number of prisoners
+        int numEachStrategy = numPrisoners / 4; // Number of prisoners for each strategy
 
-    private List<Prisoner> prisoners;
-
-    public PrisonerSimulation() {
-        prisoners = new ArrayList<>();
-    }
-
-    public PrisonerSimulation(int width, int height) {
-        super();
-        setWidth(width);
-        setHeight(height);
-        prisoners = new ArrayList<>();
-    }
-
-    public List<Prisoner> getPrisoners() {
-        return prisoners;
-    }
-
-    public void addPrisoner(Prisoner prisoner) {
-        prisoners.add(prisoner);
-    }
-
-    public void runSimulation(int rounds) {
-        for (int i = 0; i < rounds; i++) {
-            playRound();
+        // Populate with prisoners using different strategies
+        for (int i = 0; i < numEachStrategy; i++) {
+            addAgent(new Prisoner(this, new AlwaysCheat()));
+            addAgent(new Prisoner(this, new AlwaysCooperate()));
+            addAgent(new Prisoner(this, new RandomlyCooperate()));
+            addAgent(new Prisoner(this, new Tit4Tat()));
         }
     }
 
-    private void playRound() {
-        for (int i = 0; i < prisoners.size(); i++) {
-            for (int j = i + 1; j < prisoners.size(); j++) {
-                Prisoner prisoner1 = prisoners.get(i);
-                Prisoner prisoner2 = prisoners.get(j);
+    @Override
+    public void stats() {
+        int totalFitnessAlwaysCheat = 0;
+        int totalFitnessAlwaysCooperate = 0;
+        int totalFitnessRandomlyCooperate = 0;
+        int totalFitnessTitForTat = 0;
 
-                boolean decision1 = prisoner1.makeDecision();
-                boolean decision2 = prisoner2.makeDecision();
+        int numAlwaysCheat = 0;
+        int numAlwaysCooperate = 0;
+        int numRandomlyCooperate = 0;
+        int numTitForTat = 0;
 
-                if (decision1 && decision2) {
-                    prisoner1.addPayoff(3);
-                    prisoner2.addPayoff(3);
-                } else if (decision1 && !decision2) {
-                    prisoner1.addPayoff(0);
-                    prisoner2.addPayoff(5);
-                } else if (!decision1 && decision2) {
-                    prisoner1.addPayoff(5);
-                    prisoner2.addPayoff(0);
-                } else {
-                    prisoner1.addPayoff(1);
-                    prisoner2.addPayoff(1);
-                }
+        for (simstation.Agent agent : getAgents()) {
+            Prisoner prisoner = (Prisoner) agent;
+            int fitness = prisoner.getFitness();
+            Strategy strategy = prisoner.getStrategy();
+
+            if (strategy instanceof AlwaysCheat) {
+                totalFitnessAlwaysCheat += fitness;
+                numAlwaysCheat++;
+            } else if (strategy instanceof AlwaysCooperate) {
+                totalFitnessAlwaysCooperate += fitness;
+                numAlwaysCooperate++;
+            } else if (strategy instanceof RandomlyCooperate) {
+                totalFitnessRandomlyCooperate += fitness;
+                numRandomlyCooperate++;
+            } else if (strategy instanceof Tit4Tat) {
+                totalFitnessTitForTat += fitness;
+                numTitForTat++;
             }
         }
 
+        int avgFitnessAlwaysCheat = numAlwaysCheat > 0 ? totalFitnessAlwaysCheat / numAlwaysCheat : 0;
+        int avgFitnessAlwaysCooperate = numAlwaysCooperate > 0 ? totalFitnessAlwaysCooperate / numAlwaysCooperate : 0;
+        int avgFitnessRandomlyCooperate = numRandomlyCooperate > 0 ? totalFitnessRandomlyCooperate / numRandomlyCooperate : 0;
+        int avgFitnessTitForTat = numTitForTat > 0 ? totalFitnessTitForTat / numTitForTat : 0;
 
+        String[] stats = {
+                "Average Fitness - Always Cheat: " + avgFitnessAlwaysCheat,
+                "Average Fitness - Always Cooperate: " + avgFitnessAlwaysCooperate,
+                "Average Fitness - Randomly Cooperate: " + avgFitnessRandomlyCooperate,
+                "Average Fitness - Tit For Tat: " + avgFitnessTitForTat
+        };
 
+        displayStats(stats);
+    }
+
+    private void displayStats(String[] stats) {
+        StringBuilder statsBuilder = new StringBuilder();
+        for (String stat : stats) {
+            statsBuilder.append(stat).append("\n");
+        }
+
+        JOptionPane.showMessageDialog(null, statsBuilder.toString(), "Prisoner Fitness Stats", JOptionPane.INFORMATION_MESSAGE);
     }
 
     public static void main(String[] args) {
-        PrisonerSimulation simulation = new PrisonerSimulation();
-
-        simulation.setWidth(800);
-        simulation.setHeight(600);
-
-        Prisoner prisoner1 = new Prisoner(simulation);
-        Prisoner prisoner2 = new Prisoner(simulation);
-
-        prisoner1.setStrategy(new AlwaysCooperateStrategy());
-        prisoner2.setStrategy(new AlwaysCheatStrategy());
-
-        simulation.addPrisoner(prisoner1);
-        simulation.addPrisoner(prisoner2);
-
-        simulation.runSimulation(10);
-        System.out.println("Prisoner 1 payoff: " + prisoner1.getPayoff());
-        System.out.println("Prisoner 2 payoff: " + prisoner2.getPayoff());
-
-//        SimulationView view = new SimulationView(new PrisonerSimulation());
-
-        SimulationView view = new SimulationView(simulation);
         AppPanel panel = new SimulationPanel(new PrisonerFactory());
-        panel.add(view);
         panel.display();
-
-
-
-
-
-
     }
 }
 
