@@ -12,7 +12,7 @@ class AlwaysCooperate implements Strategy {
     }
 }
 
-class AlwaysCheatStrategy implements Strategy {
+class AlwaysCheat implements Strategy {
     @Override
     public boolean cooperate() {
         return false;
