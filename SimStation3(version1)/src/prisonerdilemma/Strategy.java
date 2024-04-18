@@ -1,39 +1,39 @@
 package prisonerdilemma;
+import mvc.*;
 
 public interface Strategy {
-    boolean decide();
+    boolean cooperate();
 }
 
-class AlwaysCooperateStrategy implements Strategy {
+class AlwaysCooperate implements Strategy {
     @Override
-    public boolean decide() {
+    public boolean cooperate() {
         return true;
     }
 }
 
 class AlwaysCheatStrategy implements Strategy {
     @Override
-    public boolean decide() {
+    public boolean cooperate() {
         return false;
     }
 }
 
-class RandomCooperateStrategy implements Strategy {
+class RandomlyCooperate implements Strategy {
     @Override
-    public boolean decide() {
-        return Math.random() < 0.5; // Cooperate with a probability of 0.5
+    public boolean cooperate() {
+        return Utilities.rng.nextBoolean();
     }
 }
 
-class TitForTatStrategy implements Strategy {
-    private boolean lastOpponentCooperated;
+class Tit4Tat implements Strategy {
+    private boolean lastOpponentCooperated = true;
 
-    public TitForTatStrategy(boolean lastOpponentCooperated) {
-        this.lastOpponentCooperated = lastOpponentCooperated;
+    public boolean cooperate() {
+        return lastOpponentCooperated;
     }
 
-    @Override
-    public boolean decide() {
-        return lastOpponentCooperated;
+    public void setLastOpponentCooperated(boolean value) {
+        lastOpponentCooperated = value;
     }
 }
