@@ -1,104 +1,56 @@
 package prisonerdilemma;
-
-import mvc.Utilities;
 import simstation.*;
-
-import java.util.List;
-import java.util.Random;
 
 public class Prisoner extends Agent {
     private int fitness = 0;
     private boolean cheated = false;
     private Strategy strategy;
-    private int payoff;
 
-    public void addPayoff(int payoff) {
-        this.payoff += payoff;
-    }
-
-    public boolean makeDecision() {
-        return strategy.decide();
-    }
-
-    public int getPayoff() {
-        return payoff;
-    }
-
-//    public Prisoner(Strategy strategy) {
-//        super(world); // Pass null as the Simulation object for now
-//        this.strategy = strategy;
-//    }
-
-    public Prisoner(Simulation world) {
+    public Prisoner(Simulation world, Strategy strategy) {
         super(world);
-    }
-
-    public void setStrategy(Strategy strategy) {
         this.strategy = strategy;
     }
 
-    public boolean isCooperator() {
-        return strategy instanceof AlwaysCooperateStrategy;
+    public int getFitness() {
+        return fitness;
     }
 
-
-
-
-//    public Prisoner(Strategy strategy) {
-//        super(null);
-//        this.strategy = strategy;
-//    }
-    public boolean cooperate(){
-        return new Random().nextBoolean();
+    public boolean hasCheated() {
+        return cheated;
     }
 
     @Override
     public void update() {
-//        if (isCooperator()) {
-//            updateFitness(1);
-//        } else {
-//            updateFitness(-1);
-//        }
-        int dx = Utilities.rng.nextInt(3) - 1;
-        int dy = Utilities.rng.nextInt(3) - 1;
+        Agent neighbor = world.getNeighbor(this, 20);
+        if (neighbor != null && neighbor != this) {
+            Prisoner otherPrisoner = (Prisoner) neighbor;
+            boolean myCooperate = strategy.cooperate();
+            boolean otherCooperate = otherPrisoner.strategy.cooperate();
 
-        int newX = Math.max(0, Math.min(getXc() + dx, world.getWidth() - 1));
-        int newY = Math.max(0, Math.min(getYc() + dy, world.getHeight() - 1));
-        coord.setLocation(newX, newY);
+            if (myCooperate && otherCooperate) {
+                updateFitness(3);
+                otherPrisoner.updateFitness(3);
+            } else if (myCooperate && !otherCooperate) {
+                updateFitness(0);
+                otherPrisoner.updateFitness(5);
+            } else if (!myCooperate && otherCooperate) {
+                updateFitness(5);
+                otherPrisoner.updateFitness(0);
+            } else { // both cheat
+                updateFitness(1);
+                otherPrisoner.updateFitness(1);
+            }
+
+            cheated = !myCooperate && otherCooperate;
+            otherPrisoner.cheated = !otherCooperate && myCooperate;
+        }
     }
 
-    public void updateFitness(int amt) {
-        fitness+=amt;
+    private void updateFitness(int amount) {
+        fitness += amount;
     }
 
+    public Strategy getStrategy() {
+        return strategy;
+    }
 }
-
-
-
-
-// package prisonerdilemma;
-
-// import simstation.Agent;
-
-// import java.util.Random;
-
-// public class Prisoner extends Agent {
-
-//     private int fitness = 0;
-//     private boolean cheated = false;
-//     private Strategy strategy;
-
-//     public Prisoner(Strategy strategy) {
-//         this.strategy = strategy;
-//     }
-
-//     public boolean cooperate(){
-//         return new Random().nextBoolean();
-//     }
-
-//     @Override
-//     public void update() { }
-
-//     public void updateFitness(int amt) { }
-
-// }
